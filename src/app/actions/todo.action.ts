@@ -1,33 +1,35 @@
-import {Todo} from '../models/Todo';
+import {TodoInterface} from '../models/TodoInterface';
 
-export class AddTodo {
-    static readonly type = '[Todo] Add';
+export namespace Todo {
+  export class Add {
+    static readonly type = '[TodoInterface] Add';
 
-    constructor(public payload: Todo) {
+    constructor(public payload: TodoInterface) {
     }
-}
+  }
 
-export class GetTodos {
-    static readonly type = '[Todo] Get';
-}
+  export class Get {
+    static readonly type = '[TodoInterface] Get';
+  }
 
-export class UpdateTodo {
-    static readonly type = '[Todo] Update';
+  export class Update {
+    static readonly type = '[TodoInterface] Update';
 
-    constructor(public payload: Todo, public id: number) {
+    constructor(public payload: TodoInterface, public id: number) {
     }
-}
+  }
 
-export class DeleteTodo {
-    static readonly type = '[Todo] Delete';
+  export class Delete {
+    static readonly type = '[TodoInterface] Delete';
 
     constructor(public id: number) {
     }
-}
+  }
 
-export class SetSelectedTodo {
-    static readonly type = '[Todo] Set';
+  export class SetSelected {
+    static readonly type = '[TodoInterface] Set';
 
-    constructor(public payload: Todo) {
+    constructor(public payload: TodoInterface) {
     }
+  }
 }

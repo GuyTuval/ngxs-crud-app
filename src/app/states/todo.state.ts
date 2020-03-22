@@ -1,12 +1,12 @@
-import {State, Action, StateContext, Selector} from '@ngxs/store';
-import {Todo} from '../models/Todo';
-import {AddTodo, DeleteTodo, GetTodos, SetSelectedTodo, UpdateTodo} from '../actions/todo.action';
+import {Action, Selector, State, StateContext} from '@ngxs/store';
+import {TodoInterface} from '../models/TodoInterface';
 import {TodoService} from '../todo.service';
 import {tap} from 'rxjs/operators';
+import {Todo} from '../actions/todo.action';
 
 export class TodoStateModel {
-    todos: Todo[];
-    selectedTodo: Todo;
+    todos: TodoInterface[];
+    selectedTodo: TodoInterface;
 }
 
 @State<TodoStateModel>({
@@ -31,59 +31,54 @@ export class TodoState {
         return state.selectedTodo;
     }
 
-    @Action(GetTodos)
-    getTodos({getState, setState}: StateContext<TodoStateModel>) {
+    @Action(Todo.Get)
+    getTodos({patchState}: StateContext<TodoStateModel>) {
         return this.todoService.fetchTodos().pipe(tap((result) => {
-            const state = getState();
-            setState({
-                ...state,
+            patchState({
                 todos: result,
             });
         }));
     }
 
-    @Action(AddTodo)
-    addTodo({getState, patchState}: StateContext<TodoStateModel>, {payload}: AddTodo) {
+    @Action(Todo.Add)
+    addTodo({getState, patchState}: StateContext<TodoStateModel>, {payload}: Todo.Add) {
         return this.todoService.addTodo(payload).pipe(tap((result) => {
             const state = getState();
+            result.id = state.todos[state.todos.length - 1].id + 1;
             patchState({
                 todos: [...state.todos, result]
             });
         }));
     }
 
-    @Action(UpdateTodo)
-    updateTodo({getState, setState}: StateContext<TodoStateModel>, {payload, id}: UpdateTodo) {
+    @Action(Todo.Update)
+    updateTodo({getState, patchState}: StateContext<TodoStateModel>, {payload, id}: Todo.Update) {
         return this.todoService.updateTodo(payload, id).pipe(tap((result) => {
             const state = getState();
             const todoList = [...state.todos];
             const todoIndex = todoList.findIndex(item => item.id === id);
             todoList[todoIndex] = result;
-            setState({
-                ...state,
+            patchState({
                 todos: todoList,
             });
         }));
     }
 
 
-    @Action(DeleteTodo)
-    deleteTodo({getState, setState}: StateContext<TodoStateModel>, {id}: DeleteTodo) {
+    @Action(Todo.Delete)
+    deleteTodo({getState, patchState}: StateContext<TodoStateModel>, {id}: Todo.Delete) {
         return this.todoService.deleteTodo(id).pipe(tap(() => {
             const state = getState();
             const filteredArray = state.todos.filter(item => item.id !== id);
-            setState({
-                ...state,
+            patchState({
                 todos: filteredArray,
             });
         }));
     }
 
-    @Action(SetSelectedTodo)
-    setSelectedTodoId({getState, setState}: StateContext<TodoStateModel>, {payload}: SetSelectedTodo) {
-        const state = getState();
-        setState({
-            ...state,
+    @Action(Todo.SetSelected)
+    setSelectedTodoId({patchState}: StateContext<TodoStateModel>, {payload}: Todo.SetSelected) {
+        patchState({
             selectedTodo: payload
         });
     }

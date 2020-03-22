@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {Todo} from './models/Todo';
+import {TodoInterface} from './models/TodoInterface';
+import {of} from 'rxjs';
 
 @Injectable({
     providedIn: 'root'
@@ -11,18 +12,18 @@ export class TodoService {
     }
 
     fetchTodos() {
-        return this.http.get<Todo[]>('https://jsonplaceholder.typicode.com/todos');
+        return this.http.get<TodoInterface[]>('https://jsonplaceholder.typicode.com/todos');
     }
 
     deleteTodo(id: number) {
-        return this.http.delete(`https://jsonplaceholder.typicode.com/todos/${id}`);
+        return of({});
     }
 
-    addTodo(payload: Todo) {
-        return this.http.post<Todo>('https://jsonplaceholder.typicode.com/todos', payload);
+    addTodo(payload: TodoInterface) {
+        return of(payload);
     }
 
-    updateTodo(payload: Todo, id: number) {
-        return this.http.put<Todo>(`https://jsonplaceholder.typicode.com/todos/${id}`, payload);
+    updateTodo(payload: TodoInterface, id: number) {
+        return of(payload);
     }
 }
