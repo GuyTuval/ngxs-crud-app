@@ -9,7 +9,7 @@ import {ListComponent} from './list/list.component';
 import {FormComponent} from './form/form.component';
 import {HttpClientModule} from '@angular/common/http';
 import {ReactiveFormsModule} from '@angular/forms';
-import {TodoState} from './states/todo.state';
+import {ngxsConfig} from './ngxs.config';
 
 @NgModule({
     declarations: [
@@ -20,8 +20,7 @@ import {TodoState} from './states/todo.state';
     imports: [
         BrowserModule,
         NgxsModule.forRoot([
-            TodoState
-        ]),
+        ], ngxsConfig),
         NgxsReduxDevtoolsPluginModule.forRoot(),
         NgxsLoggerPluginModule.forRoot(),
         HttpClientModule,
