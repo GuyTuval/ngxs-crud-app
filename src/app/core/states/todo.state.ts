@@ -6,8 +6,10 @@ import {tap} from 'rxjs/operators';
 import {TodoInterface} from '../interfaces/TodoInterface';
 import {Observable} from 'rxjs';
 
+const STATE_NAME = 'todos';
+
 @State<TodoStateModel>({
-  name: 'todos',
+  name: STATE_NAME,
   defaults: {
     todoList: [],
     selectedTodo: null
@@ -20,7 +22,7 @@ export class TodoState {
   @Selector()
   static getTodoListSize(prefix: string) {
     return createSelector([TodoState], (state: {string: TodoStateModel}[]) => {
-      return state['todos'].todoList.filter(s => s.title.startsWith(prefix)).length;
+      return state[STATE_NAME].todoList.filter(s => s.title.startsWith(prefix)).length;
     });
   }
 
