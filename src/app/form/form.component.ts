@@ -1,7 +1,12 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Observable, Subscription} from 'rxjs';
-import {TodoInterface} from '../models/TodoInterface';
+import {TodoInterface} from '../core/interfaces/TodoInterface';
+import {Select, Store} from '@ngxs/store';
+import {TodoState} from '../core/states/todo.state';
+import {Todo} from '../core/actions/todo.actions';
+
+const prefix = 'd';
 
 @Component({
   selector: 'app-form',
@@ -9,19 +14,22 @@ import {TodoInterface} from '../models/TodoInterface';
   styleUrls: ['./form.component.scss']
 })
 export class FormComponent implements OnInit, OnDestroy {
-  selectedTodo$: Observable<TodoInterface>;
+  public prefix = prefix;
+  @Select(TodoState.getSelectedTodo) selectedTodo$: Observable<TodoInterface>;
+  @Select(TodoState.getTodoList) todoList$: Observable<TodoInterface[]>;
+  @Select(TodoState.getTodoListSize(prefix)) prefixTodoListSize$: Observable<number>;
   todoForm: FormGroup;
   editTodo = false;
   private formSubscription: Subscription = new Subscription();
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private store: Store) {
     this.createForm();
   }
 
   ngOnInit() {
     this.formSubscription.add(
       this.selectedTodo$.subscribe(todo => {
-        if (todo) {
+        if (todo !== null) {
           this.todoForm.patchValue(todo);
           this.editTodo = true;
         } else {
@@ -44,9 +52,19 @@ export class FormComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
+    let action: Todo.Edit | Todo.Add;
+    if (this.editTodo) {
+      console.log(+this.todoForm.value.id, this.todoForm.value);
+      action = new Todo.Edit(+this.todoForm.value.id, this.todoForm.value);
+    } else {
+      action = new Todo.Add(this.todoForm.value);
+    }
+    this.store.dispatch(action);
+    this.clearForm();
   }
 
   clearForm() {
     this.todoForm.reset();
+    this.store.dispatch(new Todo.SetSelectedTodo(null));
   }
 }

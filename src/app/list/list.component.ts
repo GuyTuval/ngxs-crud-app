@@ -1,9 +1,9 @@
 import {Component, OnInit} from '@angular/core';
-import {TodoState} from '../states/todo.state';
 import {Select, Store} from '@ngxs/store';
-import {TodoInterface} from '../models/TodoInterface';
+import {TodoInterface} from '../core/interfaces/TodoInterface';
 import {Observable} from 'rxjs';
-import {Todo} from '../actions/todo.action';
+import {TodoState} from '../core/states/todo.state';
+import {Todo} from '../core/actions/todo.actions';
 
 @Component({
     selector: 'app-list',
@@ -11,18 +11,21 @@ import {Todo} from '../actions/todo.action';
     styleUrls: ['./list.component.scss']
 })
 export class ListComponent implements OnInit {
-    todos$: Observable<TodoInterface[]>;
+    @Select(TodoState.getTodoList) todoList$: Observable<TodoInterface[]>;
 
     constructor(private store: Store) {
     }
 
     ngOnInit() {
+      this.store.dispatch(new Todo.FetchAll());
     }
 
     deleteTodo(id: number) {
+      this.store.dispatch(new Todo.Delete(id));
     }
 
-    editTodo(payload: TodoInterface) {
+    editTodo(todo: TodoInterface) {
+      this.store.dispatch(new Todo.SetSelectedTodo(todo));
     }
 
 }

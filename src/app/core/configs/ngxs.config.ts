@@ -1,4 +1,4 @@
-import {environment} from '../environments/environment';
+import {environment} from '../../../environments/environment';
 import {NgxsModuleOptions} from '@ngxs/store';
 
 export const ngxsConfig: NgxsModuleOptions = {

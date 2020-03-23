@@ -3,7 +3,7 @@
         <form [formGroup]="todoForm" (ngSubmit)="onSubmit()">
             <div class="form-group">
                 <label class="col-md-4">User Id</label>
-                <input type="number" class="form-control" formControlName="userId" #userId/>
+                <input type="number" class="form-control" formControlName="userId"/>
                 <div *ngIf="todoForm.controls['userId'].invalid && (todoForm.controls['userId'].dirty || todoForm.controls['userId'].touched)"
                      class="alert alert-danger">
                     <div *ngIf="todoForm.controls['userId'].errors.required">
@@ -13,7 +13,7 @@
             </div>
             <div class="form-group">
                 <label class="col-md-4">Title</label>
-                <input type="title" class="form-control" formControlName="title" #title/>
+                <input type="title" class="form-control" formControlName="title"/>
                 <div *ngIf="todoForm.controls['title'].invalid && (todoForm.controls['title'].dirty || todoForm.controls['title'].touched)"
                      class="alert alert-danger">
                     <div *ngIf="todoForm.controls['title'].errors.required">
@@ -31,3 +31,9 @@
         </form>
     </div>
 </div>
+<br/>
+<div *ngIf="prefixTodoListSize$">
+  <p>Prefix is: {{prefix}}</p>
+  <p>Amount of Todo's that match {{prefix}}: {{prefixTodoListSize$ | async}}</p>
+</div>
+
