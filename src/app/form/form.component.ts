@@ -54,7 +54,6 @@ export class FormComponent implements OnInit, OnDestroy {
   onSubmit() {
     let action: Todo.Edit | Todo.Add;
     if (this.editTodo) {
-      console.log(+this.todoForm.value.id, this.todoForm.value);
       action = new Todo.Edit(+this.todoForm.value.id, this.todoForm.value);
     } else {
       action = new Todo.Add(this.todoForm.value);
