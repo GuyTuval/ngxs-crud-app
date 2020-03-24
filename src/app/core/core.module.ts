@@ -6,6 +6,7 @@ import {HttpClientModule} from '@angular/common/http';
 import {NgxsModule} from '@ngxs/store';
 import {TodoState} from './states/todo.state';
 import {ngxsConfig} from './configs/ngxs.config';
+import {LiveUpdateService} from './services/live-update.service';
 
 
 @NgModule({
@@ -17,6 +18,7 @@ import {ngxsConfig} from './configs/ngxs.config';
     NgxsLoggerPluginModule.forRoot(),
     HttpClientModule,
   ],
+  providers: [LiveUpdateService],
   exports: [
     CommonModule,
     HttpClientModule,
