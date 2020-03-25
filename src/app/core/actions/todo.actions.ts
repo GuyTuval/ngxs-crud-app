@@ -12,8 +12,22 @@ export namespace Todo {
     }
   }
 
+  export class AddLiveUpdate {
+    static readonly type = '[Todo] Live Update For Added Todo';
+
+    public constructor(public todo: TodoInterface) {
+    }
+  }
+
   export class Delete {
-    static readonly type = '[Todo] Get Todo';
+    static readonly type = '[Todo] Deleted Todo';
+
+    public constructor(public id: number) {
+    }
+  }
+
+  export class DeleteLiveUpdate {
+    static readonly type = '[Todo] Live Update For Deleted Todo';
 
     public constructor(public id: number) {
     }
@@ -23,6 +37,13 @@ export namespace Todo {
     static readonly type = '[Todo] Edit Todo';
 
     public constructor(public id: number, public todo: TodoInterface) {
+    }
+  }
+
+  export class EditLiveUpdate {
+    static readonly type = '[Todo]  Live Update For Edited Todo';
+
+    public constructor(public todo: TodoInterface) {
     }
   }
 

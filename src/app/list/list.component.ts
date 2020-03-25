@@ -16,12 +16,22 @@ export class ListComponent implements OnInit, OnDestroy {
   public subscription: Subscription;
 
   constructor(private store: Store, private liveUpdateService: LiveUpdateService) {
+    this.subscription = new Subscription();
   }
 
   ngOnInit() {
     this.store.dispatch(new Todo.FetchAll());
-    this.subscription = this.liveUpdateService.getDeleted().subscribe(
-      () => this.store.dispatch(new Todo.FetchAll())
+    this.subscription.add(this.liveUpdateService.getAdded().subscribe(
+      (todo: TodoInterface) => this.store.dispatch(new Todo.AddLiveUpdate(todo))
+      )
+    );
+    this.subscription.add(this.liveUpdateService.getUpdated().subscribe(
+      (todo: TodoInterface) => this.store.dispatch(new Todo.EditLiveUpdate(todo))
+      )
+    );
+    this.subscription.add(this.liveUpdateService.getDeleted().subscribe(
+      (todoId: number) => this.store.dispatch(new Todo.DeleteLiveUpdate(todoId))
+      )
     );
   }
 

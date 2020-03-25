@@ -5,6 +5,7 @@ import {Todo} from '../actions/todo.actions';
 import {tap} from 'rxjs/operators';
 import {TodoInterface} from '../interfaces/TodoInterface';
 import {Observable} from 'rxjs';
+import {LiveUpdateService} from '../services/live-update.service';
 
 const STATE_NAME = 'todos';
 
@@ -16,12 +17,12 @@ const STATE_NAME = 'todos';
   }
 })
 export class TodoState {
-  constructor(private todoService: TodoService) {
+  constructor(private todoService: TodoService, private liveUpdateService: LiveUpdateService) {
   }
 
   @Selector()
   static getTodoListSize(prefix: string) {
-    return createSelector([TodoState], (state: {string: TodoStateModel}[]) => {
+    return createSelector([TodoState], (state: { string: TodoStateModel }[]) => {
       return state[STATE_NAME].todoList.filter(s => s.title.startsWith(prefix)).length;
     });
   }
@@ -49,36 +50,66 @@ export class TodoState {
   addTodo(ctx: StateContext<TodoStateModel>, action: Todo.Add): Observable<TodoInterface> {
     return this.todoService.addTodo(action.todo).pipe(
       tap((todo: TodoInterface) => {
-        const state = ctx.getState();
-        const todoList = [...state.todoList, todo];
-        ctx.patchState({todoList});
+        this.addTodoToState(ctx, todo);
+        this.liveUpdateService.sendAdded(todo);
       })
     );
+  }
+
+  @Action(Todo.AddLiveUpdate)
+  addTodoAfterLiveUpdate(ctx: StateContext<TodoStateModel>, action: Todo.AddLiveUpdate) {
+    this.addTodoToState(ctx, action.todo);
+  }
+
+  private addTodoToState(ctx: StateContext<TodoStateModel>, todo: TodoInterface) {
+    const state = ctx.getState();
+    const todoList = [...state.todoList, todo];
+    ctx.patchState({todoList});
   }
 
   @Action(Todo.Edit)
   editTodo(ctx: StateContext<TodoStateModel>, action: Todo.Edit): Observable<TodoInterface> {
     return this.todoService.updateTodo(action.todo, action.id).pipe(
       tap((updatedTodo: TodoInterface) => {
-        const state = ctx.getState();
-        const todoList = [...state.todoList];
-        const todoIndex = todoList.findIndex((todo: TodoInterface) => todo.id === action.id);
-        todoList[todoIndex] = updatedTodo;
-        ctx.patchState({todoList});
+        this.editTodoInState(ctx, updatedTodo);
+        this.liveUpdateService.sendUpdated(updatedTodo);
       })
     );
+  }
+
+  @Action(Todo.EditLiveUpdate)
+  editTodoAfterLiveUpdate(ctx: StateContext<TodoStateModel>, action: Todo.EditLiveUpdate) {
+    this.editTodoInState(ctx, action.todo);
+  }
+
+  private editTodoInState(ctx: StateContext<TodoStateModel>, updatedTodo: TodoInterface) {
+    const state = ctx.getState();
+    const todoList = [...state.todoList];
+    const todoIndex = todoList.findIndex((todo: TodoInterface) => todo.id === updatedTodo.id);
+    todoList[todoIndex] = updatedTodo;
+    ctx.patchState({todoList});
   }
 
   @Action(Todo.Delete)
   deleteTodo(ctx: StateContext<TodoStateModel>, action: Todo.Delete): Observable<number> {
     return this.todoService.deleteTodo(action.id).pipe(
       tap(() => {
-        const state = ctx.getState();
-        const todoList = state.todoList;
-        const filteredTodoList = todoList.filter((todo: TodoInterface) => todo.id !== action.id);
-        ctx.patchState({todoList: filteredTodoList});
+        this.deleteTodoFromState(ctx, action.id);
+        this.liveUpdateService.sendDeleted(action.id);
       })
     );
+  }
+
+  @Action(Todo.DeleteLiveUpdate)
+  deleteTodoAfterLiveUpdate(ctx: StateContext<TodoStateModel>, action: Todo.DeleteLiveUpdate) {
+    this.deleteTodoFromState(ctx, action.id);
+  }
+
+  private deleteTodoFromState(ctx: StateContext<TodoStateModel>, todoId: number) {
+    const state = ctx.getState();
+    const todoList = state.todoList;
+    const filteredTodoList = todoList.filter((todo: TodoInterface) => todo.id !== todoId);
+    ctx.patchState({todoList: filteredTodoList});
   }
 
   @Action(Todo.SetSelectedTodo)
