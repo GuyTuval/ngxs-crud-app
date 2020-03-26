@@ -31,12 +31,12 @@ export class LiveUpdateService {
     this.socket.emit('left_room', this.currentRoom);
   }
 
-  public getLeftRoom(): Observable<void> {
-    return this.getActionEvents('left_room');
+  public getLeftRoom(): Observable<string> {
+    return this.getActionEvents<string>('left_room');
   }
 
   public fireAddedEvent(todo: TodoInterface) {
-    this.socket.emit('added', {todo: todo, room: this.currentRoom});
+    this.socket.emit('added', todo);
   }
 
   public getAddedEvent(): Observable<TodoInterface> {
@@ -44,7 +44,7 @@ export class LiveUpdateService {
   }
 
   public fireUpdatedEvent(todo: TodoInterface) {
-    this.socket.emit('updated', {todo: todo, room: this.currentRoom});
+    this.socket.emit('updated', todo);
   }
 
   public getUpdatedEvent(): Observable<TodoInterface> {
@@ -52,7 +52,7 @@ export class LiveUpdateService {
   }
 
   public fireDeletedEvent(todoId: number) {
-    this.socket.emit('deleted', {todoId: todoId, room: this.currentRoom});
+    this.socket.emit('deleted', todoId);
   }
 
   public getDeletedEvent(): Observable<number> {
