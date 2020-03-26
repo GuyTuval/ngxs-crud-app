@@ -26,6 +26,7 @@ export class ListComponent implements OnInit, OnDestroy {
 
   public joinRoom(room: string) {
     this.liveUpdateService.fireJoinedRoomEvent(room);
+    this.selectedRoom = room;
   }
 
   ngOnInit() {
