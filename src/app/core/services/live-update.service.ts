@@ -16,27 +16,27 @@ export class LiveUpdateService {
     this.socket = io.connect(`${environment.apiUrl}${this.namespace}`);
   }
 
-  public sendAdded(todo: TodoInterface) {
+  public fireAddedEvent(todo: TodoInterface) {
     this.socket.emit('added', todo);
   }
 
-  public getAdded(): Observable<TodoInterface> {
+  public getAddedEvent(): Observable<TodoInterface> {
     return this.getActionEvents<TodoInterface>('added');
   }
 
-  public sendUpdated(todo: TodoInterface) {
+  public fireUpdatedEvent(todo: TodoInterface) {
     this.socket.emit('updated', todo);
   }
 
-  public getUpdated(): Observable<TodoInterface> {
+  public getUpdatedEvent(): Observable<TodoInterface> {
     return this.getActionEvents<TodoInterface>('updated');
   }
 
-  public sendDeleted(todoId: number) {
+  public fireDeletedEvent(todoId: number) {
     this.socket.emit('deleted', todoId);
   }
 
-  public getDeleted(): Observable<number> {
+  public getDeletedEvent(): Observable<number> {
     return this.getActionEvents<number>('deleted');
   }
 

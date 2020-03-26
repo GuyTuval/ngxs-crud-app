@@ -51,7 +51,7 @@ export class TodoState {
     return this.todoService.addTodo(action.todo).pipe(
       tap((todo: TodoInterface) => {
         this.addTodoToState(ctx, todo);
-        this.liveUpdateService.sendAdded(todo);
+        this.liveUpdateService.fireAddedEvent(todo);
       })
     );
   }
@@ -72,7 +72,7 @@ export class TodoState {
     return this.todoService.updateTodo(action.todo, action.id).pipe(
       tap((updatedTodo: TodoInterface) => {
         this.editTodoInState(ctx, updatedTodo);
-        this.liveUpdateService.sendUpdated(updatedTodo);
+        this.liveUpdateService.fireUpdatedEvent(updatedTodo);
       })
     );
   }
@@ -95,7 +95,7 @@ export class TodoState {
     return this.todoService.deleteTodo(action.id).pipe(
       tap(() => {
         this.deleteTodoFromState(ctx, action.id);
-        this.liveUpdateService.sendDeleted(action.id);
+        this.liveUpdateService.fireDeletedEvent(action.id);
       })
     );
   }

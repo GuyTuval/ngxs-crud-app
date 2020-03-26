@@ -21,15 +21,15 @@ export class ListComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.store.dispatch(new Todo.FetchAll());
-    this.subscription.add(this.liveUpdateService.getAdded().subscribe(
+    this.subscription.add(this.liveUpdateService.getAddedEvent().subscribe(
       (todo: TodoInterface) => this.store.dispatch(new Todo.AddLiveUpdate(todo))
       )
     );
-    this.subscription.add(this.liveUpdateService.getUpdated().subscribe(
+    this.subscription.add(this.liveUpdateService.getUpdatedEvent().subscribe(
       (todo: TodoInterface) => this.store.dispatch(new Todo.EditLiveUpdate(todo))
       )
     );
-    this.subscription.add(this.liveUpdateService.getDeleted().subscribe(
+    this.subscription.add(this.liveUpdateService.getDeletedEvent().subscribe(
       (todoId: number) => this.store.dispatch(new Todo.DeleteLiveUpdate(todoId))
       )
     );
