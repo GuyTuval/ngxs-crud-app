@@ -6,12 +6,14 @@ import {ListComponent} from './list/list.component';
 import {FormComponent} from './form/form.component';
 import {ReactiveFormsModule} from '@angular/forms';
 import {CoreModule} from './core/core.module';
+import { TodoComponent } from './todo/todo.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     ListComponent,
-    FormComponent
+    FormComponent,
+    TodoComponent
   ],
   imports: [
     BrowserModule,

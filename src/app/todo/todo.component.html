@@ -1,0 +1,15 @@
+<div class="container">
+  <select #selectedRoom>
+    <option value="room1" selected>Room #1</option>
+    <option value="room2">Room #2</option>
+    <option value="room3">Room #3</option>
+  </select>
+  <div class="row">
+    <div class="col-md-6">
+      <app-form></app-form>
+    </div>
+    <div class="col-md-6">
+      <app-list [selectedRoom]="selectedRoom.value"></app-list>
+    </div>
+  </div>
+</div>

@@ -1,10 +1,11 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {Select, Store} from '@ngxs/store';
 import {TodoInterface} from '../core/interfaces/TodoInterface';
 import {Observable, Subscription} from 'rxjs';
 import {TodoState} from '../core/states/todo.state';
 import {Todo} from '../core/actions/todo.actions';
 import {LiveUpdateService} from '../core/services/live-update.service';
+import {take} from 'rxjs/operators';
 
 @Component({
   selector: 'app-list',
@@ -13,6 +14,7 @@ import {LiveUpdateService} from '../core/services/live-update.service';
 })
 export class ListComponent implements OnInit, OnDestroy {
   @Select(TodoState.getTodoList) todoList$: Observable<TodoInterface[]>;
+  @Input() public selectedRoom: string;
   public subscription: Subscription;
 
   constructor(private store: Store, private liveUpdateService: LiveUpdateService) {
@@ -21,6 +23,10 @@ export class ListComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.store.dispatch(new Todo.FetchAll());
+    this.liveUpdateService.fireJoinedRoomEvent(this.selectedRoom);
+    this.liveUpdateService.getJoinedRoomEvent().pipe(take(1)).subscribe((responseMessage: string) =>
+      console.log(responseMessage)
+    );
     this.subscription.add(this.liveUpdateService.getAddedEvent().subscribe(
       (todo: TodoInterface) => this.store.dispatch(new Todo.AddLiveUpdate(todo))
       )
@@ -36,6 +42,8 @@ export class ListComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    this.liveUpdateService.fireLeftRoomEvent();
+    this.liveUpdateService.getLeftRoom().subscribe(a => console.log('left')).unsubscribe();
     this.subscription.unsubscribe();
   }
 
