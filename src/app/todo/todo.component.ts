@@ -1,14 +1,17 @@
-import { Component, OnInit } from '@angular/core';
+import {Component} from '@angular/core';
+import {ListComponent} from '../list/list.component';
 
 @Component({
   selector: 'app-todo',
   templateUrl: './todo.component.html',
   styleUrls: ['./todo.component.scss']
 })
-export class TodoComponent implements OnInit {
+export class TodoComponent {
 
   constructor() { }
 
-  ngOnInit() {
+  updateList(listComponent: ListComponent, room: string) {
+    listComponent.leaveRoom();
+    listComponent.joinRoom(room);
   }
 }
