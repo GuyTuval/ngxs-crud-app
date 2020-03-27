@@ -32,9 +32,9 @@ export class ListComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.store.dispatch(new Todo.FetchAll());
     this.liveUpdateService.fireJoinedRoomEvent(this.selectedRoom);
-    this.liveUpdateService.getJoinedRoomEvent().subscribe((responseMessage: string) =>
+    this.subscription.add(this.liveUpdateService.getJoinedRoomEvent().subscribe((responseMessage: string) =>
       console.log(responseMessage)
-    );
+    ));
     this.subscription.add(this.liveUpdateService.getAddedEvent().subscribe(
       (todo: TodoInterface) => this.store.dispatch(new Todo.AddLiveUpdate(todo))
       )
@@ -53,7 +53,6 @@ export class ListComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.liveUpdateService.fireLeftRoomEvent();
-    this.liveUpdateService.getLeftRoom().subscribe(a => console.log('left')).unsubscribe();
     this.subscription.unsubscribe();
   }
 
