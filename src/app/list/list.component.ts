@@ -20,11 +20,8 @@ export class ListComponent implements OnInit, OnDestroy {
     this.subscription = new Subscription();
   }
 
-  public leaveRoom() {
+  public replaceRoom(room: string) {
     this.liveUpdateService.fireLeftRoomEvent();
-  }
-
-  public joinRoom(room: string) {
     this.liveUpdateService.fireJoinedRoomEvent(room);
     this.selectedRoom = room;
   }
