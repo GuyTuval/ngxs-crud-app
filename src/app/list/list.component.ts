@@ -20,12 +20,6 @@ export class ListComponent implements OnInit, OnDestroy {
     this.subscription = new Subscription();
   }
 
-  public replaceRoom(room: string) {
-    this.liveUpdateService.fireLeftRoomEvent();
-    this.liveUpdateService.fireJoinedRoomEvent(room);
-    this.selectedRoom = room;
-  }
-
   ngOnInit() {
     this.store.dispatch(new Todo.FetchAll());
     this.liveUpdateService.fireJoinedRoomEvent(this.selectedRoom);
@@ -51,6 +45,12 @@ export class ListComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.liveUpdateService.fireLeftRoomEvent();
     this.subscription.unsubscribe();
+  }
+
+  public replaceRoom(room: string) {
+    this.liveUpdateService.fireLeftRoomEvent();
+    this.liveUpdateService.fireJoinedRoomEvent(room);
+    this.selectedRoom = room;
   }
 
   deleteTodo(id: number) {
