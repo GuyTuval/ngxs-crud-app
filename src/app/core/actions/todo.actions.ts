@@ -16,6 +16,10 @@ export namespace Todo {
     }
   }
 
+  /**
+   * An action representing a live update (meaning, update sent from the server and was not initiated by
+   * the current client action)
+   */
   export class AddLiveUpdate {
     static readonly type = '[Todo] Live Update For Added Todo';
 
@@ -30,6 +34,10 @@ export namespace Todo {
     }
   }
 
+  /**
+   * An action representing a live deletion (meaning, update sent from the server and was not initiated by
+   * the current client action)
+   */
   export class DeleteLiveUpdate {
     static readonly type = '[Todo] Live Update For Deleted Todo';
 
@@ -44,6 +52,10 @@ export namespace Todo {
     }
   }
 
+  /**
+   * An action representing a live edition (meaning, update sent from the server and was not initiated by
+   * the current client action)
+   */
   export class EditLiveUpdate {
     static readonly type = '[Todo]  Live Update For Edited Todo';
 

@@ -12,8 +12,14 @@ export class TodoComponent {
   constructor() {
   }
 
+  /**
+   * Updates the list component and the form component that the room was replaced
+   * @param room The new room
+   * @param listComponent The list component
+   * @param formComponent The form component
+   */
   replaceRoom(room: string, listComponent: TodoListComponent, formComponent: TodoFormComponent) {
-    listComponent.replaceRoom(room);
+    listComponent.replaceRoomAndUpdateTodoList(room);
     formComponent.replaceRoom(room);
   }
 }

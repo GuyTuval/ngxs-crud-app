@@ -24,6 +24,8 @@ export class TodoListComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.store.dispatch(new Todo.FetchAll({'room': this.selectedRoom} as Room));
     this.liveUpdateService.fireJoinedRoomEvent(this.selectedRoom);
+
+    // Listens for live updates
     this.subscription.add(this.liveUpdateService.getJoinedRoomEvent().subscribe((responseMessage: string) =>
       console.log(responseMessage)
     ));
@@ -48,7 +50,7 @@ export class TodoListComponent implements OnInit, OnDestroy {
     this.subscription.unsubscribe();
   }
 
-  public replaceRoom(room: string) {
+  public replaceRoomAndUpdateTodoList(room: string) {
     this.selectedRoom = room;
     this.liveUpdateService.fireLeftRoomEvent();
     this.liveUpdateService.fireJoinedRoomEvent(room);
