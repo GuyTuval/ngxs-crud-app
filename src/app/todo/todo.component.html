@@ -1,12 +1,12 @@
 <div class="container">
-  <select #selectedRoom (change)="listComponent.replaceRoom(selectedRoom.value)">
+  <select #selectedRoom (change)="replaceRoom(selectedRoom.value, listComponent, formComponent)">
     <option value="room1" selected>Room #1</option>
     <option value="room2">Room #2</option>
     <option value="room3">Room #3</option>
   </select>
   <div class="row">
     <div class="col-md-6">
-      <app-form></app-form>
+      <app-form [selectedRoom]="selectedRoom.value" #formComponent></app-form>
     </div>
     <div class="col-md-6">
       <app-list [selectedRoom]="selectedRoom.value" #listComponent></app-list>

@@ -1,4 +1,6 @@
 import {Component} from '@angular/core';
+import {ListComponent} from '../list/list.component';
+import {FormComponent} from '../form/form.component';
 
 @Component({
   selector: 'app-todo',
@@ -7,5 +9,11 @@ import {Component} from '@angular/core';
 })
 export class TodoComponent {
 
-  constructor() { }
+  constructor() {
+  }
+
+  replaceRoom(room: string, listComponent: ListComponent, formComponent: FormComponent) {
+    listComponent.replaceRoom(room);
+    formComponent.replaceRoom(room);
+  }
 }

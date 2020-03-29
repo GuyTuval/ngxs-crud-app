@@ -5,6 +5,7 @@ import {TodoInterface} from '../core/interfaces/todo.interface';
 import {Select, Store} from '@ngxs/store';
 import {TodoState} from '../core/states/todo.state';
 import {Todo} from '../core/actions/todo.actions';
+import {Room} from '../core/interfaces/room.interface';
 
 const prefix = 'd';
 
@@ -15,6 +16,7 @@ const prefix = 'd';
 })
 export class FormComponent implements OnInit, OnDestroy {
   public prefix = prefix;
+  @Input() public selectedRoom: string;
   @Select(TodoState.getSelectedTodo) selectedTodo$: Observable<TodoInterface>;
   @Select(TodoState.getTodoList) todoList$: Observable<TodoInterface[]>;
   @Select(TodoState.getTodoListSize(prefix)) prefixTodoListSize$: Observable<number>;
@@ -41,6 +43,10 @@ export class FormComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.formSubscription.unsubscribe();
+  }
+
+  public replaceRoom(room: string) {
+    this.selectedRoom = room;
   }
 
   createForm() {
