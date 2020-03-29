@@ -1,15 +1,20 @@
 <div class="container">
+  <!-- Room selection -->
   <select #selectedRoom (change)="replaceRoom(selectedRoom.value, listComponent, formComponent)">
     <option value="room1" selected>Room #1</option>
     <option value="room2">Room #2</option>
     <option value="room3">Room #3</option>
   </select>
+
   <div class="row">
+    <!-- Todo edit form -->
     <div class="col-md-6">
-      <app-form [selectedRoom]="selectedRoom.value" #formComponent></app-form>
+      <app-todo-form [selectedRoom]="selectedRoom.value" #formComponent></app-todo-form>
     </div>
+
+    <!-- Todo list -->
     <div class="col-md-6">
-      <app-list [selectedRoom]="selectedRoom.value" #listComponent></app-list>
+      <app-todo-list [selectedRoom]="selectedRoom.value" #listComponent></app-todo-list>
     </div>
   </div>
 </div>

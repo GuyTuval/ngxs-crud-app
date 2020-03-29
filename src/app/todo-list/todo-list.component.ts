@@ -8,11 +8,11 @@ import {LiveUpdateService} from '../core/services/live-update.service';
 import {Room} from '../core/interfaces/room.interface';
 
 @Component({
-  selector: 'app-list',
-  templateUrl: './list.component.html',
-  styleUrls: ['./list.component.scss']
+  selector: 'app-todo-list',
+  templateUrl: './todo-list.component.html',
+  styleUrls: ['./todo-list.component.scss']
 })
-export class ListComponent implements OnInit, OnDestroy {
+export class TodoListComponent implements OnInit, OnDestroy {
   @Select(TodoState.getTodoList) todoList$: Observable<TodoInterface[]>;
   @Input() public selectedRoom: string;
   public subscription: Subscription;

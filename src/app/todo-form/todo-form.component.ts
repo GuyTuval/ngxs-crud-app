@@ -10,11 +10,11 @@ import {Room} from '../core/interfaces/room.interface';
 const prefix = 'd';
 
 @Component({
-  selector: 'app-form',
-  templateUrl: './form.component.html',
-  styleUrls: ['./form.component.scss']
+  selector: 'app-todo-form',
+  templateUrl: './todo-form.component.html',
+  styleUrls: ['./todo-form.component.scss']
 })
-export class FormComponent implements OnInit, OnDestroy {
+export class TodoFormComponent implements OnInit, OnDestroy {
   public prefix = prefix;
   @Input() public selectedRoom: string;
   @Select(TodoState.getSelectedTodo) selectedTodo$: Observable<TodoInterface>;
