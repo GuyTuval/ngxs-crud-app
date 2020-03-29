@@ -1,14 +1,18 @@
-import {TodoInterface} from '../interfaces/TodoInterface';
+import {TodoInterface} from '../interfaces/todo.interface';
+import {Room} from '../interfaces/room.interface';
 
 export namespace Todo {
   export class FetchAll {
     static readonly type = '[Todo] Fetch All';
+
+    public constructor(public room: Room) {
+    }
   }
 
   export class Add {
     static readonly type = '[Todo] Add Todo';
 
-    public constructor(public todo: TodoInterface) {
+    public constructor(public room: Room, public todo: TodoInterface) {
     }
   }
 

@@ -5,6 +5,7 @@ import {Observable, Subscription} from 'rxjs';
 import {TodoState} from '../core/states/todo.state';
 import {Todo} from '../core/actions/todo.actions';
 import {LiveUpdateService} from '../core/services/live-update.service';
+import {Room} from '../core/interfaces/room.interface';
 
 @Component({
   selector: 'app-list',
@@ -21,7 +22,7 @@ export class ListComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.store.dispatch(new Todo.FetchAll());
+    this.store.dispatch(new Todo.FetchAll({'room': this.selectedRoom} as Room));
     this.liveUpdateService.fireJoinedRoomEvent(this.selectedRoom);
     this.subscription.add(this.liveUpdateService.getJoinedRoomEvent().subscribe((responseMessage: string) =>
       console.log(responseMessage)
@@ -48,9 +49,10 @@ export class ListComponent implements OnInit, OnDestroy {
   }
 
   public replaceRoom(room: string) {
+    this.selectedRoom = room;
     this.liveUpdateService.fireLeftRoomEvent();
     this.liveUpdateService.fireJoinedRoomEvent(room);
-    this.selectedRoom = room;
+    this.store.dispatch(new Todo.FetchAll({'room': this.selectedRoom} as Room));
   }
 
   deleteTodo(id: number) {

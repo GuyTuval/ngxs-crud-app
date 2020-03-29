@@ -38,8 +38,8 @@ export class TodoState {
   }
 
   @Action(Todo.FetchAll)
-  fetchTodoList(ctx: StateContext<TodoStateModel>): Observable<TodoInterface[]> {
-    return this.todoService.fetchTodoList().pipe(
+  fetchTodoList(ctx: StateContext<TodoStateModel>, action: Todo.FetchAll): Observable<TodoInterface[]> {
+    return this.todoService.fetchTodoList(action.room).pipe(
       tap((todoList: TodoInterface[]) => {
         ctx.patchState({todoList});
       })
@@ -48,7 +48,7 @@ export class TodoState {
 
   @Action(Todo.Add)
   addTodo(ctx: StateContext<TodoStateModel>, action: Todo.Add): Observable<TodoInterface> {
-    return this.todoService.addTodo(action.todo).pipe(
+    return this.todoService.addTodo(action.room, action.todo).pipe(
       tap((todo: TodoInterface) => {
         this.addTodoToState(ctx, todo);
         this.liveUpdateService.fireAddedEvent(todo);

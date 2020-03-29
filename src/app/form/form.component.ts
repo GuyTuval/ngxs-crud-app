@@ -62,7 +62,7 @@ export class FormComponent implements OnInit, OnDestroy {
     if (this.editTodo) {
       action = new Todo.Edit(+this.todoForm.value.id, this.todoForm.value);
     } else {
-      action = new Todo.Add(this.todoForm.value);
+      action = new Todo.Add({'room': this.selectedRoom} as Room, this.todoForm.value);
     }
     this.store.dispatch(action);
     this.clearForm();
