@@ -1,6 +1,6 @@
-import {TodoInterface} from '../interfaces/TodoInterface';
+import {TodoInterface} from '../interfaces/todo.interface';
 
 export class TodoStateModel {
-    todoList: TodoInterface[];
-    selectedTodo: TodoInterface;
+  todoList: TodoInterface[];
+  selectedTodo: TodoInterface;
 }

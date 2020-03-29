@@ -1,6 +1,6 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {Select, Store} from '@ngxs/store';
-import {TodoInterface} from '../core/interfaces/TodoInterface';
+import {TodoInterface} from '../core/interfaces/todo.interface';
 import {Observable, Subscription} from 'rxjs';
 import {TodoState} from '../core/states/todo.state';
 import {Todo} from '../core/actions/todo.actions';

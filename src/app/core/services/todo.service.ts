@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
-import {TodoInterface} from '../interfaces/TodoInterface';
+import {HttpClient, HttpParams} from '@angular/common/http';
+import {TodoInterface} from '../interfaces/todo.interface';
 import {Observable} from 'rxjs';
 import {environment} from '../../../environments/environment';
 

@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import * as io from 'socket.io-client';
 import {Observable} from 'rxjs';
 import {environment} from '../../../environments/environment';
-import {TodoInterface} from '../interfaces/TodoInterface';
+import {TodoInterface} from '../interfaces/todo.interface';
 
 @Injectable({
   providedIn: 'root'

@@ -3,7 +3,7 @@ import {TodoService} from '../services/todo.service';
 import {TodoStateModel} from '../models/todo-state.model';
 import {Todo} from '../actions/todo.actions';
 import {tap} from 'rxjs/operators';
-import {TodoInterface} from '../interfaces/TodoInterface';
+import {TodoInterface} from '../interfaces/todo.interface';
 import {Observable} from 'rxjs';
 import {LiveUpdateService} from '../services/live-update.service';
 

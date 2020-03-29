@@ -1,7 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Observable, Subscription} from 'rxjs';
-import {TodoInterface} from '../core/interfaces/TodoInterface';
+import {TodoInterface} from '../core/interfaces/todo.interface';
 import {Select, Store} from '@ngxs/store';
 import {TodoState} from '../core/states/todo.state';
 import {Todo} from '../core/actions/todo.actions';
