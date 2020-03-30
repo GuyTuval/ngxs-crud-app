@@ -7,6 +7,8 @@ import {TodoFormComponent} from './todo-form/todo-form.component';
 import {ReactiveFormsModule} from '@angular/forms';
 import {CoreModule} from './core/core.module';
 import { TodoComponent } from './todo/todo.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
 
 @NgModule({
   declarations: [
@@ -19,7 +21,9 @@ import { TodoComponent } from './todo/todo.component';
     BrowserModule,
     CoreModule,
     ReactiveFormsModule,
-    AppRoutingModule
+    AppRoutingModule,
+    BrowserAnimationsModule,
+    MatSnackBarModule
   ],
   providers: [],
   bootstrap: [AppComponent]

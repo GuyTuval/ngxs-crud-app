@@ -6,6 +6,8 @@ import {tap} from 'rxjs/operators';
 import {TodoInterface} from '../interfaces/todo.interface';
 import {Observable} from 'rxjs';
 import {TodoLiveUpdateService} from '../services/todo-live-update.service';
+import {AddTodoResponse, FetchTodoListResponse, UpdateTodoResponse} from '../interfaces/backend-responses';
+import {SnackbarService} from '../services/snackbar-service.service';
 
 const STATE_NAME = 'todos';
 
@@ -17,7 +19,8 @@ const STATE_NAME = 'todos';
   }
 })
 export class TodoState {
-  constructor(private todoService: TodoService, private liveUpdateService: TodoLiveUpdateService) {
+  constructor(private todoService: TodoService, private liveUpdateService: TodoLiveUpdateService,
+              private snackBarService: SnackbarService) {
   }
 
   @Selector()
@@ -38,20 +41,27 @@ export class TodoState {
   }
 
   @Action(Todo.FetchAll)
-  fetchTodoList(ctx: StateContext<TodoStateModel>, action: Todo.FetchAll): Observable<TodoInterface[]> {
+  fetchTodoList(ctx: StateContext<TodoStateModel>, action: Todo.FetchAll): Observable<FetchTodoListResponse> {
     return this.todoService.fetchTodoList(action.room).pipe(
-      tap((todoList: TodoInterface[]) => {
-        ctx.patchState({todoList});
+      tap((fetchTodoListResponse: FetchTodoListResponse) => {
+        if (fetchTodoListResponse.status === 'ok') {
+          ctx.patchState({'todoList': fetchTodoListResponse.todoList});
+        } else {
+          this.snackBarService.open(fetchTodoListResponse.message);
+        }
       })
     );
   }
 
   @Action(Todo.Add)
-  addTodo(ctx: StateContext<TodoStateModel>, action: Todo.Add): Observable<TodoInterface> {
+  addTodo(ctx: StateContext<TodoStateModel>, action: Todo.Add): Observable<AddTodoResponse> {
     return this.todoService.addTodo(action.room, action.todo).pipe(
-      tap((todo: TodoInterface) => {
-        this.addTodoToState(ctx, todo);
-        this.liveUpdateService.fireAddedEvent(todo);
+      tap((addTodoResponse: AddTodoResponse) => {
+        if (addTodoResponse.status === 'ok') {
+          this.addTodoToState(ctx, addTodoResponse.todo);
+          this.liveUpdateService.fireAddedEvent(addTodoResponse.todo);
+        }
+        this.snackBarService.open(addTodoResponse.message);
       })
     );
   }
@@ -68,11 +78,14 @@ export class TodoState {
   }
 
   @Action(Todo.Edit)
-  editTodo(ctx: StateContext<TodoStateModel>, action: Todo.Edit): Observable<TodoInterface> {
+  editTodo(ctx: StateContext<TodoStateModel>, action: Todo.Edit): Observable<UpdateTodoResponse> {
     return this.todoService.updateTodo(action.todo, action.id).pipe(
-      tap((updatedTodo: TodoInterface) => {
-        this.editTodoInState(ctx, updatedTodo);
-        this.liveUpdateService.fireUpdatedEvent(updatedTodo);
+      tap((updateTodoResponse: UpdateTodoResponse) => {
+        if (updateTodoResponse.status === 'ok') {
+          this.editTodoInState(ctx, updateTodoResponse.todo);
+          this.liveUpdateService.fireUpdatedEvent(updateTodoResponse.todo);
+        }
+        this.snackBarService.open(updateTodoResponse.message);
       })
     );
   }
