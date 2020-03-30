@@ -3,11 +3,15 @@ import * as io from 'socket.io-client';
 import {Observable} from 'rxjs';
 import {environment} from '../../../environments/environment';
 import {TodoInterface} from '../interfaces/todo.interface';
+import {TodoEvents} from './todo-events.enum';
 
 /**
  * NOTE!
- * In any moment, the client is at a single room!
- * Meaning, the client won't be in 2+ rooms.
+ * 1) In any moment, the client is at a single room!
+ *    Meaning, the client won't be in 2+ rooms.
+ * 2) The event sent from the server has the same name as the event sent to the server.
+ *    For example, upon update a TodoEvents.UPDATED event is sent to the server.
+ *    The server sends a TodoEvents.UPDATED to all the relevant connections.
  */
 
 @Injectable({
@@ -16,7 +20,7 @@ import {TodoInterface} from '../interfaces/todo.interface';
 /**
  * A class for sending live updates to the server and for fetching live updates from the server
  */
-export class LiveUpdateService {
+export class TodoLiveUpdateService {
   private socket: io.Socket;
   private readonly namespace: string;
   private currentRoom: string;
@@ -32,7 +36,7 @@ export class LiveUpdateService {
    * @param room The room to which the client wants to join
    */
   public fireJoinedRoomEvent(room: string): void {
-    this.socket.emit('joined_room', room);
+    this.socket.emit(TodoEvents.JOINED_ROOM, room);
     this.currentRoom = room;
   }
 
@@ -41,14 +45,14 @@ export class LiveUpdateService {
    * return An observable of the room to which the client joined
    */
   public getJoinedRoomEvent(): Observable<string> {
-    return this.getActionEvents<string>('joined_room');
+    return this.getActionEvents<string>(TodoEvents.JOINED_ROOM);
   }
 
   /**
    * Sends the server a request to leave the current room
    */
   public fireLeftRoomEvent() {
-    this.socket.emit('left_room', this.currentRoom);
+    this.socket.emit(TodoEvents.LEFT_ROOM, this.currentRoom);
   }
 
   /**
@@ -56,7 +60,7 @@ export class LiveUpdateService {
    * return An observable of the room that the client left
    */
   public getLeftRoom(): Observable<string> {
-    return this.getActionEvents<string>('left_room');
+    return this.getActionEvents<string>(TodoEvents.LEFT_ROOM);
   }
 
   /**
@@ -64,7 +68,7 @@ export class LiveUpdateService {
    * @param todo The added todo
    */
   public fireAddedEvent(todo: TodoInterface) {
-    this.socket.emit('added', todo);
+    this.socket.emit(TodoEvents.ADDED, todo);
   }
 
   /**
@@ -72,7 +76,7 @@ export class LiveUpdateService {
    * return An observable of the todo that was added
    */
   public getAddedEvent(): Observable<TodoInterface> {
-    return this.getActionEvents<TodoInterface>('added');
+    return this.getActionEvents<TodoInterface>(TodoEvents.ADDED);
   }
 
   /**
@@ -80,7 +84,7 @@ export class LiveUpdateService {
    * @param todo The updated todo
    */
   public fireUpdatedEvent(todo: TodoInterface) {
-    this.socket.emit('updated', todo);
+    this.socket.emit(TodoEvents.UPDATED, todo);
   }
 
   /**
@@ -88,7 +92,7 @@ export class LiveUpdateService {
    * return An observable of the todo that was updated
    */
   public getUpdatedEvent(): Observable<TodoInterface> {
-    return this.getActionEvents<TodoInterface>('updated');
+    return this.getActionEvents<TodoInterface>(TodoEvents.UPDATED);
   }
 
   /**
@@ -96,7 +100,7 @@ export class LiveUpdateService {
    * @param todoId The id of the deleted todo
    */
   public fireDeletedEvent(todoId: number) {
-    this.socket.emit('deleted', todoId);
+    this.socket.emit(TodoEvents.DELETED, todoId);
   }
 
   /**
@@ -104,7 +108,7 @@ export class LiveUpdateService {
    * return An observable of the todo that was deleted
    */
   public getDeletedEvent(): Observable<number> {
-    return this.getActionEvents<number>('deleted');
+    return this.getActionEvents<number>(TodoEvents.DELETED);
   }
 
   /**

@@ -4,7 +4,7 @@ import {TodoInterface} from '../core/interfaces/todo.interface';
 import {Observable, Subscription} from 'rxjs';
 import {TodoState} from '../core/states/todo.state';
 import {Todo} from '../core/actions/todo.actions';
-import {LiveUpdateService} from '../core/services/live-update.service';
+import {TodoLiveUpdateService} from '../core/services/todo-live-update.service';
 import {Room} from '../core/interfaces/room.interface';
 
 @Component({
@@ -17,7 +17,7 @@ export class TodoListComponent implements OnInit, OnDestroy {
   @Input() public selectedRoom: string;
   public subscription: Subscription;
 
-  constructor(private store: Store, private liveUpdateService: LiveUpdateService) {
+  constructor(private store: Store, private liveUpdateService: TodoLiveUpdateService) {
     this.subscription = new Subscription();
   }
 

@@ -5,7 +5,7 @@ import {Todo} from '../actions/todo.actions';
 import {tap} from 'rxjs/operators';
 import {TodoInterface} from '../interfaces/todo.interface';
 import {Observable} from 'rxjs';
-import {LiveUpdateService} from '../services/live-update.service';
+import {TodoLiveUpdateService} from '../services/todo-live-update.service';
 
 const STATE_NAME = 'todos';
 
@@ -17,7 +17,7 @@ const STATE_NAME = 'todos';
   }
 })
 export class TodoState {
-  constructor(private todoService: TodoService, private liveUpdateService: LiveUpdateService) {
+  constructor(private todoService: TodoService, private liveUpdateService: TodoLiveUpdateService) {
   }
 
   @Selector()
