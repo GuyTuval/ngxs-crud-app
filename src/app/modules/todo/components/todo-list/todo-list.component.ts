@@ -1,11 +1,11 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {Select, Store} from '@ngxs/store';
-import {TodoInterface} from '../core/interfaces/todo.interface';
+import {TodoInterface} from '../../../../core/interfaces/todo.interface';
 import {Observable, Subscription} from 'rxjs';
-import {TodoState} from '../core/states/todo.state';
-import {Todo} from '../core/actions/todo.actions';
-import {TodoLiveUpdateService} from '../core/services/todo-live-update.service';
-import {Room} from '../core/interfaces/room.interface';
+import {TodoState} from '../../../../core/states/todo.state';
+import {Todo} from '../../../../core/actions/todo.actions';
+import {TodoLiveUpdateService} from '../../../../core/services/todo-live-update.service';
+import {Room} from '../../../../core/interfaces/room.interface';
 
 @Component({
   selector: 'app-todo-list',

@@ -1,11 +1,11 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Observable, Subscription} from 'rxjs';
-import {TodoInterface} from '../core/interfaces/todo.interface';
+import {TodoInterface} from '../../../../core/interfaces/todo.interface';
 import {Select, Store} from '@ngxs/store';
-import {TodoState} from '../core/states/todo.state';
-import {Todo} from '../core/actions/todo.actions';
-import {Room} from '../core/interfaces/room.interface';
+import {TodoState} from '../../../../core/states/todo.state';
+import {Todo} from '../../../../core/actions/todo.actions';
+import {Room} from '../../../../core/interfaces/room.interface';
 
 const prefix = 'd';
 
