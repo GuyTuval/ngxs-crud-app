@@ -6,7 +6,6 @@ import {HttpClientModule} from '@angular/common/http';
 import {NgxsModule} from '@ngxs/store';
 import {TodoState} from './states/todo.state';
 import {ngxsConfig} from './configs/ngxs.config';
-import {EnsureModuleLoadedOnceGuard} from './ensure-module-loaded-once.guard';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {TodoLiveUpdateService} from './services/todo-live-update.service';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
@@ -29,12 +28,13 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
     HttpClientModule,
   ],
 })
-export class CoreModule extends EnsureModuleLoadedOnceGuard {
+export class CoreModule {
   // Ensures that CoreModule is only loaded into AppModule
 
   // Looks for the module in the parent injector to see if it's already been loaded (only allows it to be loaded once)
   constructor(@Optional() @SkipSelf() parentModule: CoreModule) {
-    super(parentModule);
+    if (parentModule) {
+      throw new Error(`${parentModule.constructor.name} has already been loaded. Import this module in the AppModule only.`);
+    }
   }
-
 }
