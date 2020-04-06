@@ -42,7 +42,7 @@ export class TodoState {
 
   @Action(Todo.FetchAll)
   fetchTodoList(ctx: StateContext<TodoStateModel>, action: Todo.FetchAll): Observable<FetchTodoListResponse> {
-    return this.todoService.fetchTodoList(action.room).pipe(
+    return this.todoService.fetchTodoList(action.room.room).pipe(
       tap((fetchTodoListResponse: FetchTodoListResponse) => {
         if (fetchTodoListResponse.status === 'ok') {
           ctx.patchState({'todoList': fetchTodoListResponse.todoList});
