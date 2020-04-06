@@ -14,7 +14,7 @@ export class TodoService {
   constructor(private http: HttpClient) {
   }
 
-  fetchTodoList(room: Room): Observable<FetchTodoListResponse> {
+  fetchTodoList(room: string): Observable<FetchTodoListResponse> {
     const params = new HttpParams().set('room', room.room);
     return this.http.get<FetchTodoListResponse>(`${environment.apiUrl}/todos`, {params});
   }
