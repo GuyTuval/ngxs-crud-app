@@ -24,25 +24,6 @@ export class TodoListComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.store.dispatch(new Todo.FetchAll({'room': this.selectedRoom} as Room));
     this.liveUpdateService.fireJoinedRoomEvent(this.selectedRoom);
-
-    // Listens for live updates
-    this.subscription.add(this.liveUpdateService.getJoinedRoomEvent().subscribe((responseMessage: string) =>
-      console.log(responseMessage)
-    ));
-    this.subscription.add(this.liveUpdateService.getAddedEvent().subscribe(
-      (todo: TodoInterface) => this.store.dispatch(new Todo.AddLiveUpdate(todo))
-      )
-    );
-    this.subscription.add(this.liveUpdateService.getUpdatedEvent().subscribe(
-      (todo: TodoInterface) => this.store.dispatch(new Todo.EditLiveUpdate(todo))
-      )
-    );
-    this.subscription.add(this.liveUpdateService.getDeletedEvent().subscribe(
-      (todoId: number) => this.store.dispatch(new Todo.DeleteLiveUpdate(todoId))
-      )
-    );
-    this.subscription.add(this.liveUpdateService.getLeftRoom().subscribe((responseMessage: string) =>
-      console.log(responseMessage)));
   }
 
   ngOnDestroy(): void {
